@@ -52,6 +52,18 @@ from src.Outpat_Visit  -- don't use vdiagnosis because that's 1 row per dx, not 
 where VisitDateTime >= '2016-01-01' and VisitDateTime <= '2018-12-31'
 group by PatientSID, Sta3n
 -- 44 sec not bad
+-- 11431021 rows
+
+select count(*) from dflt.n_outpat_visits where outpat_visits > 1
+--  9562930 so that's the vast majority: 0.8365770651
+
+select 9562930 / 11431021.0 as p
 
 
 
+/****** random sample ******/
+
+select *
+from Dflt.n_outpat_visits
+where (BINARY_CHECKSUM(*) % 100000) > 99995 and outpat_visits > 1
+-- so I just picked 99995 empirically by guess and check. Next time figure out why that yields 134 rows.
