@@ -2,4 +2,4 @@ PHI*
 *.bundle
 *.txt
 *.xlsx
-
+!phenotype-priorities.txt

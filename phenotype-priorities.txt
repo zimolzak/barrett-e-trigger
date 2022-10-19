@@ -1,0 +1,7 @@
+1. gerd = {icd, then any ppi h2ra} do AND, do OR.
+2. smoking history
+3. fhx esoph ca
+4. bmi
+5. age sex race ethn
+
+5 yr prior to 12/31/18
