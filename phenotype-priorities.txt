@@ -29,3 +29,8 @@ Start with ICD-10 first.
 3. `sample-tsv-2022-09-29.*`
 4. `P:..BE Trigger Variables...xlsx`
 
+Should be reproducible sample because it's only pseudorandom. Basically `head(sort(hash(identifier)))`.
+
+Find the 50 cases that were reviewed. Probably make a persisting table of them.
+
+Do the same thing as `select from src.Outpat_Visit` but use Vdiagnosis, and join to `dim.icd WHERE icd in ('K21.00', ...)`, and join to that `dflt` persisting table.
