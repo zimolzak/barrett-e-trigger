@@ -1,7 +1,31 @@
+# What factors
+
 1. gerd = {icd, then any ppi h2ra} do AND, do OR.
 2. smoking history
 3. fhx esoph ca
 4. bmi
 5. age sex race ethn
 
-5 yr prior to 12/31/18
+# About dates
+
+* The 5 yr prior to 12/31/18 =
+* calendar year 2014 15 16 17 2018 =
+* 2014-01-01 to 2018-12-31
+
+ICD 9 10 transition took place in USA about Oct 2015.
+Start with ICD-10 first.
+
+# Basic codes
+
+- K21.00 K21.01 K21.9
+- 530.81 esoph reflux
+- also 530.11 reflux esophagitis
+
+
+# Sample lives where?
+
+1. `100-pt-cohort-2022-09-29.sql`
+2. `dflt.n_outpat_visits`
+3. `sample-tsv-2022-09-29.*`
+4. `P:..BE Trigger Variables...xlsx`
+
