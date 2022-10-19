@@ -34,3 +34,5 @@ Should be reproducible sample because it's only pseudorandom. Basically `head(so
 Find the 50 cases that were reviewed. Probably make a persisting table of them.
 
 Do the same thing as `select from src.Outpat_Visit` but use Vdiagnosis, and join to `dim.icd WHERE icd in ('K21.00', ...)`, and join to that `dflt` persisting table.
+
+Okay wait, binary checksum itself might not be pseudorandom.
