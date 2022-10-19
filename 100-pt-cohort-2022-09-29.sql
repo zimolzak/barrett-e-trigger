@@ -63,13 +63,23 @@ select 9562930 / 11431021.0 as p
 
 /****** random sample ******/
 
-select a.*, 
-sp.PatientSSN, sp.PatientICN, sp.PatientLastName, sp.PatientFirstName,
-sta.Sta3nName
-from Dflt.n_outpat_visits as a
+select
+	a.*,
+	sp.PatientSSN, sp.PatientICN, sp.PatientLastName, sp.PatientFirstName,
+	sta.Sta3nName
+into ORD_ElSerag_202208011D.Dflt.sample_for_review_n_213
+from ORD_ElSerag_202208011D.Dflt.n_outpat_visits as a
 left join ORD_ElSerag_202208011D.src.SPatient_SPatient as sp
 on a.PatientSID = sp.PatientSID and a.Sta3n = sp.Sta3n
 left join CDWWork.dim.Sta3n as sta
 on a.Sta3n = sta.Sta3n
-where (BINARY_CHECKSUM(a.patientsid, a.sta3n) % 100000) > 99995 and outpat_visits > 1
--- so I just picked 99995 empirically by guess and check. Next time figure out why that yields 134 rows.
+where
+	(BINARY_CHECKSUM(a.patientsid, a.sta3n) % 100000) > 99995
+	and outpat_visits > 1
+-- So I just picked 99995 empirically by guess and check. Next time figure out why that yields 134 rows.
+-- Ran it again 2022-10-19, got 213 rows, hmm?
+-- on second look at TN xlsx, N = 213 looks appropriate & consistent.
+
+
+/*managed to pick just the 50 we want, add them to new table*/
+select * from ORD_ElSerag_202208011D.Dflt.sample_reviewed_n_50
