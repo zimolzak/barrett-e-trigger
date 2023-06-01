@@ -1,3 +1,13 @@
+/*
+AJZ notes 2023-06-01
+
+The line wraps are causing big problems.
+This is a side effect of storing the SQL in a PDF and copy-pasting it out.
+It's harder for all the SQL code stored in the nvarchar variables, because there is no syntax checking inside a string.
+Seems to be a problem starting ROUGHLY at line 471.
+*/
+
+
 --USE [YourDatabaseName]
 --GO
 SET ANSI_NULLS ON
@@ -45,22 +55,22 @@ GO
 --GO
 CREATE PROCEDURE [Dflt].[SmokingPR v4]
 (
---1. Patient Key Your Patient Key Field Name
-@PatientKey nvarchar(50),
---2. Crosswalk Table Name Include [Database].[Schema].[Table] Name
-@Input1 nvarchar(MAX),
---3. Healthfactors Table Name Include [Database].[Schema].[Table] Name
-@Input2 nvarchar(MAX),
---4. Coefficient Table Name Include [Database].[Schema].[Table] Name
-@Input3 nvarchar(MAX),
---5. Reference Date Column Name this could be a column or a string with a date format
-@Ref_Date_Col_Name nvarchar(50),
---6. Execute or Print
-@Execute nvarchar(20),
---7. Step To Print
-@PrintStep nvarchar(10),
---8. Pull CDW Data From Your Database?
-@InputSrc nvarchar(5)
+	--1. Patient Key Your Patient Key Field Name
+	@PatientKey nvarchar(50),
+	--2. Crosswalk Table Name Include [Database].[Schema].[Table] Name
+	@Input1 nvarchar(MAX),
+	--3. Healthfactors Table Name Include [Database].[Schema].[Table] Name
+	@Input2 nvarchar(MAX),
+	--4. Coefficient Table Name Include [Database].[Schema].[Table] Name
+	@Input3 nvarchar(MAX),
+	--5. Reference Date Column Name this could be a column or a string with a date format
+	@Ref_Date_Col_Name nvarchar(50),
+	--6. Execute or Print
+	@Execute nvarchar(20),
+	--7. Step To Print
+	@PrintStep nvarchar(10),
+	--8. Pull CDW Data From Your Database?
+	@InputSrc nvarchar(5)
 )
 AS
 BEGIN
@@ -134,61 +144,77 @@ SET @Alt_Library = 'CDWWork'
 --IF @INPUT1 Schema is 'Src' ...
 IF lower(@InputSrc) = 'yes'
 BEGIN
-SET @Schema = 'Dflt';
---Your Alt Library becomes the Input 1 Library and Alt Schema becomes 'Src'
-SET @Alt_Library = @Library;
+	SET @Schema = 'Dflt';
+	--Your Alt Library becomes the Input 1 Library and Alt Schema becomes 'Src'
+	SET @Alt_Library = @Library;
 END
 -----
 --Set up CDW tables Based on Schema
 IF lower(@InputSrc) = 'yes'
 BEGIN
-SET @vDiag_Table = '[' + @Orig_Library + '].[Src].[OutPat_vDiagnosis]'
-SET @workDiag_Table ='[' + @Orig_Library + '].[Src].[OutPat_WorkloadVDiagnosis]'
-SET @inpatD_Table ='[' + @Orig_Library + '].[Src].[InPat_InpatientDiagnosis]'
-SET @inpat_table = '[' + @Orig_Library + '].[Src].[InPat_Inpatient]'
-SET @inpatDDiag_Table = '[' + @Orig_Library + '].[Src].[InPat_InpatientDischargeDiagnosis]'
-SET @rxoutpat_Table = '[' + @Orig_Library + '].[Src].[Rxout_Rxoutpat]'
-SET @rxoutpatFill_Table = '[' + @Orig_Library + '].[Src].[Rxout_RxoutpatFill]'
-SET @bcmamedlog_Table = '[' + @Orig_Library + '].[Src].[BCMA_BCMAMedicationLOg]'
-SET @bcmadispDrug_Table = '[' + @Orig_Library + '].[Src].[BCMA_BCMADIspensedDrug]'
-SET @outpatVisit_Table = '[' + @Orig_Library + '].[Src].[OutPat_VIsit]'
-SET @hf_table = '[' + @Orig_Library + '].[Src].[HF_HealthFactor]'
+	SET @vDiag_Table = '[' + @Orig_Library + '].[Src].[OutPat_vDiagnosis]'
+	SET @workDiag_Table ='[' + @Orig_Library + '].[Src].[OutPat_WorkloadVDiagnosis]'
+	SET @inpatD_Table ='[' + @Orig_Library + '].[Src].[InPat_InpatientDiagnosis]'
+	SET @inpat_table = '[' + @Orig_Library + '].[Src].[InPat_Inpatient]'
+	SET @inpatDDiag_Table = '[' + @Orig_Library + '].[Src].[InPat_InpatientDischargeDiagnosis]'
+	SET @rxoutpat_Table = '[' + @Orig_Library + '].[Src].[Rxout_Rxoutpat]'
+	SET @rxoutpatFill_Table = '[' + @Orig_Library + '].[Src].[Rxout_RxoutpatFill]'
+	SET @bcmamedlog_Table = '[' + @Orig_Library + '].[Src].[BCMA_BCMAMedicationLOg]'
+	SET @bcmadispDrug_Table = '[' + @Orig_Library + '].[Src].[BCMA_BCMADIspensedDrug]'
+	SET @outpatVisit_Table = '[' + @Orig_Library + '].[Src].[OutPat_VIsit]'
+	SET @hf_table = '[' + @Orig_Library + '].[Src].[HF_HealthFactor]'
 END
 ELSE
 BEGIN
-SET @vDiag_Table = '[' + @Alt_Library + '].[OutPat].[vDiagnosis]'
-SET @workDiag_Table ='[' + @Alt_Library + '].[OutPat].[WorkloadVDiagnosis]'
-SET @inpatD_Table ='[' + @Alt_Library + '].[InPat].[InpatientDiagnosis]'
-SET @inpat_table = '[' + @Alt_Library + '].[InPat].[Inpatient]'
-SET @inpatDDiag_Table = '[' + @Alt_Library + '].[Inpat].[InpatientDischargeDiagnosis]'
-SET @rxoutpat_Table = '[' + @Alt_Library + '].[Rxout].[Rxoutpat]'
-SET @rxoutpatFill_Table = '[' + @Alt_Library + '].[Rxout].[RxoutpatFill]'
-SET @bcmamedlog_Table = '[' + @Alt_Library + '].[BCMA].[BCMAMedicationLOg]'
-SET @bcmadispDrug_Table = '[' + @Alt_Library + '].[BCMA].[BCMADIspensedDrug]'
-SET @outpatVisit_Table = '[' + @Alt_Library + '].[OutPat].[VIsit]'
-SET @hf_table = '[' + @Alt_Library + '].[HF].[HealthFactor]'
+	SET @vDiag_Table = '[' + @Alt_Library + '].[OutPat].[vDiagnosis]'
+	SET @workDiag_Table ='[' + @Alt_Library + '].[OutPat].[WorkloadVDiagnosis]'
+	SET @inpatD_Table ='[' + @Alt_Library + '].[InPat].[InpatientDiagnosis]'
+	SET @inpat_table = '[' + @Alt_Library + '].[InPat].[Inpatient]'
+	SET @inpatDDiag_Table = '[' + @Alt_Library + '].[Inpat].[InpatientDischargeDiagnosis]'
+	SET @rxoutpat_Table = '[' + @Alt_Library + '].[Rxout].[Rxoutpat]'
+	SET @rxoutpatFill_Table = '[' + @Alt_Library + '].[Rxout].[RxoutpatFill]'
+	SET @bcmamedlog_Table = '[' + @Alt_Library + '].[BCMA].[BCMAMedicationLOg]'
+	SET @bcmadispDrug_Table = '[' + @Alt_Library + '].[BCMA].[BCMADIspensedDrug]'
+	SET @outpatVisit_Table = '[' + @Alt_Library + '].[OutPat].[VIsit]'
+	SET @hf_table = '[' + @Alt_Library + '].[HF].[HealthFactor]'
 END
 --Step 6 - Set up @List for Smoking06V Creation
 --JPR - split this into two possible commands based on type of ref_date_col_name (column or datestring)
 IF isdate(@Ref_Date_Col_Name) = 1
 BEGIN
-SET @list =
-stuff ((select distinct ',' +
-quotename(column_name)
-from yourdatabasename.information_schema.columns
-where table_name ='Smoking05' and column_name not in (''+@PatientKey+'','reference_date')
-for xml path(''), type).value ('.','VARCHAR(MAX)'),1,1,'');
+	SET @list =
+	stuff ((select distinct ',' +
+	quotename(column_name)
+	from yourdatabasename.information_schema.columns
+	where table_name ='Smoking05' and column_name not in (''+@PatientKey+'','reference_date')
+	for xml path(''), type).value ('.','VARCHAR(MAX)'),1,1,'');
 END
 ELSE
 BEGIN
-SET @list =
-stuff ((select distinct ',' +
-quotename(column_name)
-from yourdatabasename.information_schema.columns
-where table_name ='Smoking05' and column_name not in (''+@PatientKey+'',''+ @Ref_Date_Col_Name+'')
-for xml path(''), type).value ('.','VARCHAR(MAX)'),1,1,'');
+	SET @list =
+	stuff ((select distinct ',' +
+	quotename(column_name)
+	from yourdatabasename.information_schema.columns
+	where table_name ='Smoking05' and column_name not in (''+@PatientKey+'',''+ @Ref_Date_Col_Name+'')
+	for xml path(''), type).value ('.','VARCHAR(MAX)'),1,1,'');
 END
 --END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* LOTS OF SETTING NVARCHAR VARIABLES. FROM HERE UNTIL LINE 1722 OR SO. */
+
 --=======================================================================================
 --=======================================================================================
 --
@@ -1694,6 +1720,22 @@ DROP TABLE [' + @Library + '].[' + @Schema + '].[Smoking04A];
 --------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------
 '
+
+/* DONE WITH SETTING NVARCHAR VARIABLES.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --
 --=======================================================================================
 -- Execute or Print Steps
