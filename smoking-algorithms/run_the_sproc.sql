@@ -20,6 +20,11 @@ EXECUTE @return_val = [Dflt].[SmokingPR v4]
   ,@Input3 = '[ORD_ElSerag_202208011D].[Dflt].[Smoking_coefficients_v3]'
   ,@Ref_Date_Col_Name = '2018-12-31'
   ,@Execute = 'execute'
-  ,@PrintStep = '0'  -- I think you really do need to execute each one 0..6 incrementally.
+  ,@PrintStep = '1'  -- I think you really do need to execute each one 0..6 incrementally.
   ,@InputSrc = 'yes'
 GO
+
+/*
+Step 0: creates 4-ish views like dflt.cdw_dxdata... and cdw_rxdata...
+1: create table smoking01 (in dflt, I think). Taking > 1 min.
+*/
