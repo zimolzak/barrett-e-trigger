@@ -14,12 +14,12 @@ DECLARE @InputSrc nvarchar(5)
 */
 
 EXECUTE @return_val = [Dflt].[SmokingPR v4] 
-   @PatientKey = 'abcd'
-  ,@Input1 = 'abcd'
-  ,@Input2 = 'abcd'
-  ,@Input3 = 'abcd'
-  ,@Ref_Date_Col_Name = 'abcd'
-  ,@Execute = 'abcd'
-  ,@PrintStep = 'abcd'
-  ,@InputSrc = 'abcd'
+   @PatientKey = 'PatientICN'
+  ,@Input1 = '[ORD_ElSerag_202208011D].[Src].[CohortCrosswalk]'
+  ,@Input2 = '[ORD_ElSerag_202208011D].[Dflt].[Smoking_health_factors_v1]'
+  ,@Input3 = '[ORD_ElSerag_202208011D].[Dflt].[Smoking_coefficients_v3]'
+  ,@Ref_Date_Col_Name = '2018-12-31'
+  ,@Execute = 'print'
+  ,@PrintStep = '1'
+  ,@InputSrc = 'yes'
 GO
