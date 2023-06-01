@@ -1,3 +1,12 @@
+/*
+AJZ notes, 2023-06-01
+
+How I localized the code to our own study database:
+
+1. replace [Database] with [ORD_ElSerag_202208011D]
+2. fix a few typos (or VINCI populated w/ different view names for different projects).
+
+*/
 
 CREATE VIEW 
 [Dflt].[CDW_DxData_OPC&PTF_Smoking] AS
@@ -10,7 +19,7 @@ SELECT DISTINCT
 	'OUT' as 'Care',
 	PrimarySecondary
 FROM
-[Database].[Src].[OutPat_vDiagnosis]
+[ORD_ElSerag_202208011D].[Src].[OutPat_vDiagnosis]
 
 UNION
 
@@ -22,7 +31,7 @@ SELECT DISTINCT
 	'OUT' as 'Care',
 	PrimarySecondary
 FROM
-	[Database].[Src].[OutPat_WorkloadVDiagnosis]
+	[ORD_ElSerag_202208011D].[Src].[OutPat_WorkloadVDiagnosis]
 
 UNION 
 
@@ -38,8 +47,8 @@ SELECT
 			ELSE 'S'
 		END
 FROM
-	[Database].[Src].[InPat_InpatientDiagnosis] A
-	INNER JOIN [Database].[Src].[InPat_Inpatient] B
+	[ORD_ElSerag_202208011D].[Src].[InPat_InpatientDiagnosis] A
+	INNER JOIN [ORD_ElSerag_202208011D].[Src].[InPat_Inpatient] B
 		ON A.InpatientSID = B.InpatientSID
 
 UNION
@@ -56,15 +65,15 @@ SELECT
 			ELSE 'S'
 		END
 FROM
-	[Database].[Src].[InPat_InpatientDischargeDiagnosis] A
-	INNER JOIN [Database].[Src].[InPat_Inpatient] B
+	[ORD_ElSerag_202208011D].[Src].[InPat_InpatDischargeDiagnosis] A  -- This appears to be typo "InPat_Inpatient" -> "InPat_Inpat"
+	INNER JOIN [ORD_ElSerag_202208011D].[Src].[InPat_Inpatient] B
 		ON A.InpatientSID = B.InpatientSID
 
 GO
 
 
 
-USE [Database]
+USE [ORD_ElSerag_202208011D]
 GO
 
 
@@ -85,7 +94,7 @@ SELECT DISTINCT
 	'OUT' as 'Care',
 	PrimarySecondary
 FROM
-[Database].[Src].[OutPat_vDiagnosis]
+[ORD_ElSerag_202208011D].[Src].[OutPat_vDiagnosis]
 
 UNION
 
@@ -97,7 +106,7 @@ SELECT DISTINCT
 	'OUT' as 'Care',
 	PrimarySecondary
 FROM
-	[Database].[Src].[OutPat_WorkloadVDiagnosis]
+	[ORD_ElSerag_202208011D].[Src].[OutPat_WorkloadVDiagnosis]
 
 UNION 
 
@@ -113,8 +122,8 @@ SELECT
 			ELSE 'S'
 		END
 FROM
-	[Database].[Src].[InPat_InpatientDiagnosis] A
-	INNER JOIN [Database].[Src].[InPat_Inpatient] B
+	[ORD_ElSerag_202208011D].[Src].[InPat_InpatientDiagnosis] A
+	INNER JOIN [ORD_ElSerag_202208011D].[Src].[InPat_Inpatient] B
 		ON A.InpatientSID = B.InpatientSID
 
 UNION
@@ -131,8 +140,8 @@ SELECT
 			ELSE 'S'
 		END
 FROM
-	[Database].[Src].[InPat_InpatientDischargeDiagnosis] A
-	INNER JOIN [Database].[Src].[InPat_Inpatient] B
+	[ORD_ElSerag_202208011D].[Src].[InPat_InpatDischargeDiagnosis] A  -- same typo
+	INNER JOIN [ORD_ElSerag_202208011D].[Src].[InPat_Inpatient] B
 		ON A.InpatientSID = B.InpatientSID
 
 
@@ -140,5 +149,3 @@ FROM
 -- END ICD10 View Creation
 --=======================================================================================
 GO
-
-
