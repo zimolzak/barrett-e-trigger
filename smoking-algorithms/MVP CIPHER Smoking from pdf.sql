@@ -177,7 +177,7 @@ BEGIN
 	SET @workDiag_Table ='[' + @Orig_Library + '].[Src].[OutPat_WorkloadVDiagnosis]'
 	SET @inpatD_Table ='[' + @Orig_Library + '].[Src].[InPat_InpatientDiagnosis]'
 	SET @inpat_table = '[' + @Orig_Library + '].[Src].[InPat_Inpatient]'
-	SET @inpatDDiag_Table = '[' + @Orig_Library + '].[Src].[InPat_InpatientDischargeDiagnosis]'
+	SET @inpatDDiag_Table = '[' + @Orig_Library + '].[Src].[InPat_InpatDischargeDiagnosis]'
 	SET @rxoutpat_Table = '[' + @Orig_Library + '].[Src].[Rxout_Rxoutpat]'
 	SET @rxoutpatFill_Table = '[' + @Orig_Library + '].[Src].[Rxout_RxoutpatFill]'
 	SET @bcmamedlog_Table = '[' + @Orig_Library + '].[Src].[BCMA_BCMAMedicationLOg]'
