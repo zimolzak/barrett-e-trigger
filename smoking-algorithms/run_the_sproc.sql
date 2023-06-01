@@ -29,5 +29,5 @@ Step 0: creates 4-ish views like dflt.cdw_dxdata... and cdw_rxdata...
 1: create table smoking01 (in dflt, I think). Took 1 min 55 sec.
   fixed: the column reference_date had weird contents like "+@Ref_Date_Col_Name+".
 2: Dflt.Smoking02
-  fixed: comment problem near "counseling/cessation"
+  fixed: comment problem near "counseling/cessation". LONG time, > 8.5 min.
 */
