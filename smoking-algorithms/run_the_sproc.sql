@@ -27,4 +27,7 @@ GO
 /*
 Step 0: creates 4-ish views like dflt.cdw_dxdata... and cdw_rxdata...
 1: create table smoking01 (in dflt, I think). Taking > 1 min.
+  FIXME: the column reference_date is weird like "+@Ref_Date_Col_Name+"
 */
+
+select top 10 * from Dflt.smoking01

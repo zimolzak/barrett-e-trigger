@@ -561,7 +561,7 @@ DROP TABLE [' + @Library + '].[' + @Schema + '].[Smoking01];
 SELECT distinct
 C.' + @PatientKey + ','
 IF isdate(@Ref_Date_Col_Name) = 1
-BEGIN
+BEGIN  --fixme Quoting error
 SET @SQL01 = @SQL01 + ' ''+@Ref_Date_Col_Name+'' as
 reference_date, '
 END
@@ -599,7 +599,7 @@ UNION
 SELECT distinct
 c.' + @PatientKey + ','
 IF isdate(@Ref_Date_Col_Name) = 1
-BEGIN
+BEGIN  --fixme Quoting error
 SET @SQL01 = @SQL01 + ' ''+@Ref_Date_Col_Name+'' as reference_date,
 '
 END
@@ -640,7 +640,7 @@ and Care in (''OUT'', ''IN-Admit'')
 SELECT
 ' + @PatientKey + ','
 IF isdate(@Ref_Date_Col_Name) = 1
-BEGIN
+BEGIN  --fixme Quoting error
 SET @SQL01 = @SQL01 + '''+@Ref_Date_Col_Name+'' as
 reference_date, '
 END
