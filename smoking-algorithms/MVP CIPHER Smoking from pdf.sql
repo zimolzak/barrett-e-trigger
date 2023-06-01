@@ -60,8 +60,10 @@ GO
 --MODL J. Russo (3/2022)
 -- Changed step4 to get values from NationalDrug for natonal drugname with dose (previously using nationaldrugnamewithdose from localdrug.))
 --
---DROP PROCEDURE [Dflt].[SmokingPR v4]
---GO
+
+DROP PROCEDURE [Dflt].[SmokingPR v4]
+GO
+
 CREATE PROCEDURE [Dflt].[SmokingPR v4]
 (
 	@PatientKey nvarchar(50),  --1. Patient Key: Your Patient Key Field Name
