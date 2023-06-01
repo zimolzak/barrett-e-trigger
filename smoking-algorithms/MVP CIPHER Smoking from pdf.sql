@@ -62,23 +62,14 @@ GO
 --GO
 CREATE PROCEDURE [Dflt].[SmokingPR v4]
 (
-	/* FIXME - these should be easier to read. */
-	--1. Patient Key Your Patient Key Field Name
-	@PatientKey nvarchar(50),
-	--2. Crosswalk Table Name Include [Database].[Schema].[Table] Name
-	@Input1 nvarchar(MAX),
-	--3. Healthfactors Table Name Include [Database].[Schema].[Table] Name
-	@Input2 nvarchar(MAX),
-	--4. Coefficient Table Name Include [Database].[Schema].[Table] Name
-	@Input3 nvarchar(MAX),
-	--5. Reference Date Column Name this could be a column or a string with a date format
-	@Ref_Date_Col_Name nvarchar(50),
-	--6. Execute or Print
-	@Execute nvarchar(20),
-	--7. Step To Print
-	@PrintStep nvarchar(10),
-	--8. Pull CDW Data From Your Database?
-	@InputSrc nvarchar(5)
+	@PatientKey nvarchar(50),  --1. Patient Key Your Patient Key Field Name
+	@Input1 nvarchar(MAX),  --2. Crosswalk Table Name Include [Database].[Schema].[Table] Name
+	@Input2 nvarchar(MAX),  --3. Healthfactors Table Name Include [Database].[Schema].[Table] Name
+	@Input3 nvarchar(MAX),  --4. Coefficient Table Name Include [Database].[Schema].[Table] Name
+	@Ref_Date_Col_Name nvarchar(50), --5. Reference Date Column Name this could be a column or a string with a date format
+	@Execute nvarchar(20),  --6. Execute or Print
+	@PrintStep nvarchar(10),  --7. Step To Print
+	@InputSrc nvarchar(5)  --8. Pull CDW Data From Your Database?
 )
 AS
 BEGIN
@@ -99,6 +90,7 @@ DECLARE @bcmadispDrug_Table nvarchar(max);
 DECLARE @outpatVisit_Table nvarchar(max);
 DECLARE @hf_table nvarchar(max);
 --add visit table
+
 --SQL variables based on steps
 DECLARE @SQLICD9View00D nvarchar(MAX);
 DECLARE @SQLICD9View00V nvarchar(MAX);
@@ -106,25 +98,31 @@ DECLARE @SQLICD10View00D nvarchar(MAX);
 DECLARE @SQLICD10View00V nvarchar(MAX);
 DECLARE @SQLRxDataView00D nvarchar(MAX);
 DECLARE @SQLRxDataView00V nvarchar(MAX);
+
 DECLARE @SQL01 nvarchar(MAX);
 DECLARE @SQL02 nvarchar(MAX);
 DECLARE @SQL03 nvarchar(MAX);
 DECLARE @SQL04 nvarchar(MAX);
 DECLARE @SQL05 nvarchar(MAX);
 DECLARE @SQL06 nvarchar(MAX);
+
 DECLARE @SQL06DV nvarchar(MAX);
 DECLARE @SQL06V nvarchar(MAX);
 DECLARE @SQL06T nvarchar(MAX);
+
 --Steps with multiple printlines
 DECLARE @SQL03P1 nvarchar(MAX);
 DECLARE @SQL03P2 nvarchar(MAX);
 DECLARE @SQL03P3 nvarchar(MAX);
 DECLARE @SQL03P4 nvarchar(MAX);
 DECLARE @SQL03P5 nvarchar(MAX);
+
 DECLARE @SQL04P1 nvarchar(MAX);
 DECLARE @SQL04P2 nvarchar(MAX);
+
 DECLARE @SQL05P1 nvarchar(MAX);
 DECLARE @SQL05P2 nvarchar(MAX);
+
 DECLARE @SQL06P1 nvarchar(MAX);
 DECLARE @SQL06P2 nvarchar(MAX);
 DECLARE @SQL06P3 nvarchar(MAX);
@@ -132,12 +130,17 @@ DECLARE @SQL06P4 nvarchar(MAX);
 DECLARE @SQL06P5 nvarchar(MAX);
 DECLARE @SQL06P6 nvarchar(MAX);
 DECLARE @SQL06P7 nvarchar(MAX);
+
 DECLARE @Printline nvarchar(MAX);
 --Step 7 variable to create view
 DECLARE @list nvarchar(MAX);
 
 --Parse Library and Schema names from INPUT1
-/* FIXME - what is this 'LibSchemaParseFN'? Seems not declared/defined at this point. */
+/*
+FIXME - what is this 'LibSchemaParseFN'? Seems not declared/defined at this point.
+I suspect it's an SProc or similar.
+
+*/
 SET @Library = (SELECT Dflt.LibSchemaParseFN (@Input1, 'library'));
 SET @Schema = (SELECT Dflt.LibSchemaParseFN (@Input1, 'schema'));
 DECLARE @Orig_Library nvarchar(50); --Orig @INPUT1 Library
@@ -228,6 +231,7 @@ END
 
 
 /* LOTS OF SETTING NVARCHAR VARIABLES. FROM HERE UNTIL LINE 1722 OR SO. */
+/* In approximately 6 steps. */
 
 --=======================================================================================
 --=======================================================================================
@@ -426,6 +430,10 @@ ON A.InpatientSID = B.InpatientSID
 -- END ICD10 View Creation
 --=======================================================================================
 '
+
+
+
+
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 --=======================================================
@@ -511,6 +519,10 @@ A.ActionDateTime IS NOT NULL
 --
 --=======================================================================================
 --=======================================================================================
+
+
+
+
 --
 -------------------------------------------------------------------------
 ----------------
@@ -651,6 +663,10 @@ set @SQL01 = @SQL01 + '
 -------------------
 ---------------------------------------------------------------------
 '
+
+
+
+
 --
 --=======================================================================================
 --=======================================================================================
@@ -756,6 +772,10 @@ SET @SQL02 = @SQL02 + '
 -------------------
 ---------------------------------------------------------------------
 '
+
+
+
+
 -------------------------------------------------------------------------
 ----------------
 --STEP 3: Pulling Health Factors for each patient and merging them with the new classIFication provided by study team
@@ -888,6 +908,10 @@ SET @SQL03 = @SQL03 + ';
 --
 --=======================================================================================
 --=======================================================================================
+
+
+
+
 --
 -------------------------------------------------------------------------
 ----------------
@@ -1286,6 +1310,10 @@ SET @SQL04P2 = @SQL04P2 + '
 --------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------
 '
+
+
+
+
 --
 --
 --=======================================================================================
@@ -1533,6 +1561,10 @@ SET @SQL05P2 = @SQL05P2 + '
 --------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------
 '
+
+
+
+
 --
 --
 --=======================================================================================
@@ -1607,7 +1639,7 @@ END;
 
 
 /*
-FIXME - Worried about this @INPUT3 table and does it have coefficients that I don't know about, and can I get them.
+FIXME - Worried about this @INPUT3 table. Does it have coefficients that I don't know about, and can I get them?
 */
 
 set @SQL06T = @SQL06T + '
