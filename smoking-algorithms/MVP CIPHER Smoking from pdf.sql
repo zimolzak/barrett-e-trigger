@@ -66,8 +66,8 @@ CREATE PROCEDURE [Dflt].[SmokingPR v4]
 (
 	@PatientKey nvarchar(50),  --1. Patient Key: Your Patient Key Field Name
 	@Input1 nvarchar(MAX),     --2. Crosswalk Table Name:     Include [Database].[Schema].[Table] Name (presumably ord_.src.cohortCrosswalk)
-	@Input2 nvarchar(MAX),     --3. Healthfactors Table Name: Include [Database].[Schema].[Table] Name (ord_.[Src].[HF_HealthFactor])
-	@Input3 nvarchar(MAX),     --4. Coefficient Table Name:   Include [Database].[Schema].[Table] Name
+	@Input2 nvarchar(MAX),     --3. Healthfactors Table Name: Include [Database].[Schema].[Table] Name (based on MVP's Excel sheet!)
+	@Input3 nvarchar(MAX),     --4. Coefficient Table Name:   Include [Database].[Schema].[Table] Name (based on MVP's Excel sheet!)
 	@Ref_Date_Col_Name nvarchar(50), --5. Reference Date Column Name: this could be a column or a string with a date format
 	@Execute nvarchar(20),     --6. Execute or Print (must be string 'execute' or 'print')
 	@PrintStep nvarchar(10),   --7. Step To Print (must be string '0' '1' '2' '3' '4' '5' '6')
@@ -140,7 +140,7 @@ DECLARE @list nvarchar(MAX);
 --Parse Library and Schema names from INPUT1
 /*
 FIXME - what was this 'LibSchemaParseFN'? Seems not declared/defined at this point.
-I suspect it's an SProc or similar.
+I suspect it's an SProc or similar (scalar-valued function).
 Clearly, it does something to Input1.
 Probably extracts the DB name like ORD_Whoever, and the schema like Src.
 Now I set both @Library and @Schema manually.
@@ -1749,80 +1749,75 @@ DROP TABLE [' + @Library + '].[' + @Schema + '].[Smoking04A];
 -- 'Print' displays the contents of the @SQL variable
 -- 'Execute' executes the @SQL variable
 SELECT @Printline = CASE
-WHEN @Printstep = '0' THEN @SQLICD9View00D
-WHEN @Printstep = '1' THEN @SQL01
-WHEN @Printstep = '2' THEN @SQL02
-WHEN @Printstep = '3' THEN @SQL03
-WHEN @Printstep = '4' THEN @SQL04
-WHEN @Printstep = '5' THEN @SQL05
-WHEN @Printstep = '6' THEN @SQL06DV
-ELSE 'Invalid entry for @PrintStep. Must be between ''0'' and ''7'''
+  WHEN @Printstep = '0' THEN @SQLICD9View00D
+  WHEN @Printstep = '1' THEN @SQL01
+  WHEN @Printstep = '2' THEN @SQL02
+  WHEN @Printstep = '3' THEN @SQL03
+  WHEN @Printstep = '4' THEN @SQL04
+  WHEN @Printstep = '5' THEN @SQL05
+  WHEN @Printstep = '6' THEN @SQL06DV
+  ELSE 'Invalid entry for @PrintStep. Must be between ''0'' and ''7'''
 END
+
 IF lower(@Execute) = 'print'
 BEGIN
--- Print all views created
-IF @Printstep = '0'
-BEGIN
-PRINT (@SQLICD9View00D);
-PRINT (@SQLICD9View00V);
-PRINT (@SQLICD10View00D);
-PRINT (@SQLICD10View00V);
-PRINT (@SQLRxDataView00D);
-PRINT (@SQLRxDataView00V);
+  -- Print all views created
+  IF @Printstep = '0'
+  BEGIN
+    PRINT (@SQLICD9View00D);
+    PRINT (@SQLICD9View00V);
+    PRINT (@SQLICD10View00D);
+    PRINT (@SQLICD10View00V);
+    PRINT (@SQLRxDataView00D);
+    PRINT (@SQLRxDataView00V);
+  END;
+  ELSE IF @Printstep = '3'  -- Step 3 beyond the 8K limit
+  BEGIN
+    PRINT (@SQL03);
+  END;
+  ELSE IF @Printstep = '4'
+  BEGIN
+    PRINT (@SQL04P1);
+    PRINT (@SQL04P2);
+  END;
+  ELSE IF @Printstep = '5'
+  BEGIN
+    PRINT (@SQL05P1);
+    PRINT (@SQL05P2);
+  END;
+  ELSE IF @Printstep = '6'
+  BEGIN
+    PRINT (@SQL06DV);
+    PRINT (@SQL06V);
+    PRINT (@SQL06T);
+  END;
+  ELSE
+    PRINT @Printline;
 END;
-ELSE
--- Step 3 beyond the 8K limit
-IF @Printstep = '3'
-BEGIN
-PRINT (@SQL03);
-END;
-ELSE
-IF @Printstep = '4'
-BEGIN
-PRINT (@SQL04P1);
-PRINT (@SQL04P2);
-END;
-ELSE
-IF @Printstep = '5'
-BEGIN
-PRINT (@SQL05P1);
-PRINT (@SQL05P2);
-END;
-ELSE
-IF @Printstep = '6'
-BEGIN
-PRINT (@SQL06DV);
-PRINT (@SQL06V);
-PRINT (@SQL06T);
-END;
-ELSE
-PRINT @Printline;
-END;
-ELSE
-IF lower(@Execute) = 'execute'
-IF @Printstep = '0'
-BEGIN
-EXEC (@SQLICD9View00D);
-EXEC (@SQLICD9View00V);
-EXEC (@SQLICD10View00D);
-EXEC (@SQLICD10View00V);
-EXEC (@SQLRxDataView00D);
-EXEC (@SQLRxDataView00V);
-END;
-ELSE
-IF @Printstep = '6'
-BEGIN
-EXEC (@SQL06DV);
-EXEC (@SQL06V);
-EXEC (@SQL06T);
-END;
-ELSE
-BEGIN
-IF @Printstep between '0' and '6'
-Exec (@Printline);
-ELSE
-PRINT @Printline;
-END;
+
+ELSE IF lower(@Execute) = 'execute'
+  IF @Printstep = '0'
+  BEGIN
+    EXEC (@SQLICD9View00D);
+    EXEC (@SQLICD9View00V);
+    EXEC (@SQLICD10View00D);
+    EXEC (@SQLICD10View00V);
+    EXEC (@SQLRxDataView00D);
+    EXEC (@SQLRxDataView00V);
+  END;
+  ELSE IF @Printstep = '6'
+  BEGIN
+    EXEC (@SQL06DV);
+    EXEC (@SQL06V);
+    EXEC (@SQL06T);
+  END;
+  ELSE
+  BEGIN
+    IF @Printstep between '0' and '6'
+    Exec (@Printline);
+    ELSE
+    PRINT @Printline;
+  END;
 ELSE PRINT 'Invalid entry for @Execute. Must be either ''Execute'' or ''Print''.'
 END
 GO

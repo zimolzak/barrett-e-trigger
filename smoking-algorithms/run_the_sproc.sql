@@ -19,7 +19,7 @@ EXECUTE @return_val = [Dflt].[SmokingPR v4]
   ,@Input2 = '[ORD_ElSerag_202208011D].[Dflt].[Smoking_health_factors_v1]'
   ,@Input3 = '[ORD_ElSerag_202208011D].[Dflt].[Smoking_coefficients_v3]'
   ,@Ref_Date_Col_Name = '2018-12-31'
-  ,@Execute = 'print'
-  ,@PrintStep = '1'
+  ,@Execute = 'execute'
+  ,@PrintStep = '0'  -- I think you really do need to execute each one 0..6 incrementally.
   ,@InputSrc = 'yes'
 GO
