@@ -20,14 +20,14 @@ EXECUTE @return_val = [Dflt].[SmokingPR v4]
   ,@Input3 = '[ORD_ElSerag_202208011D].[Dflt].[Smoking_coefficients_v3]'
   ,@Ref_Date_Col_Name = '2018-12-31'
   ,@Execute = 'execute'
-  ,@PrintStep = '1'  -- I think you really do need to execute each one 0..6 incrementally.
+  ,@PrintStep = '2'  -- I think you really do need to execute each one 0..6 incrementally.
   ,@InputSrc = 'yes'
 GO
 
 /*
 Step 0: creates 4-ish views like dflt.cdw_dxdata... and cdw_rxdata...
-1: create table smoking01 (in dflt, I think). Taking > 1 min.
+1: create table smoking01 (in dflt, I think). Took 1 min 55 sec.
   fixed: the column reference_date had weird contents like "+@Ref_Date_Col_Name+".
+2: Dflt.Smoking02
+  fixed: comment problem near "counseling/cessation"
 */
-
---select top 10 * from Dflt.smoking01

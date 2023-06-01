@@ -696,8 +696,7 @@ SET @SQL02 =
 --=======================================================================================
 -------------------------------------------------------------------------
 -------------------
---STEP 2: Get all outpatient and inpatient stop codes for tobacco
-counseling/cessation
+--STEP 2: Get all outpatient and inpatient stop codes for tobacco counseling/cessation
 -------------------------------------------------------------------------
 -------------------
 USE ' + @Library + ';
