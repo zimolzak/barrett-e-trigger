@@ -27,6 +27,7 @@ GO
 -- =============================================
 -- Description: Procedure: SmokingPR V4
 -- Will accept the following input parameters:
+
 -- @Patient Key Your Patient Key Field Name
 -- @Input1 Crosswalk Table Name Include [Database].[Schema].[Table] Name
 -- @Input2 Healthfactors Table Name Include [Database].[Schema].[Table] Name
@@ -36,6 +37,7 @@ GO
 -- @PrintStep Which step to print or execute - '0', '1', '2', etc
 -- Views will be printed or recreated in step 0
 -- @InputSrc yes IF you would like to use your database for source tables
+
 --
 -- Call the Procedure SmokingPR.
 -- =============================================
@@ -62,14 +64,14 @@ GO
 --GO
 CREATE PROCEDURE [Dflt].[SmokingPR v4]
 (
-	@PatientKey nvarchar(50),  --1. Patient Key Your Patient Key Field Name
-	@Input1 nvarchar(MAX),  --2. Crosswalk Table Name Include [Database].[Schema].[Table] Name
-	@Input2 nvarchar(MAX),  --3. Healthfactors Table Name Include [Database].[Schema].[Table] Name
-	@Input3 nvarchar(MAX),  --4. Coefficient Table Name Include [Database].[Schema].[Table] Name
-	@Ref_Date_Col_Name nvarchar(50), --5. Reference Date Column Name this could be a column or a string with a date format
-	@Execute nvarchar(20),  --6. Execute or Print
-	@PrintStep nvarchar(10),  --7. Step To Print
-	@InputSrc nvarchar(5)  --8. Pull CDW Data From Your Database?
+	@PatientKey nvarchar(50),  --1. Patient Key: Your Patient Key Field Name
+	@Input1 nvarchar(MAX),     --2. Crosswalk Table Name:     Include [Database].[Schema].[Table] Name (presumably ord_.src.cohortCrosswalk)
+	@Input2 nvarchar(MAX),     --3. Healthfactors Table Name: Include [Database].[Schema].[Table] Name (ord_.[Src].[HF_HealthFactor])
+	@Input3 nvarchar(MAX),     --4. Coefficient Table Name:   Include [Database].[Schema].[Table] Name
+	@Ref_Date_Col_Name nvarchar(50), --5. Reference Date Column Name: this could be a column or a string with a date format
+	@Execute nvarchar(20),     --6. Execute or Print (must be string 'execute' or 'print')
+	@PrintStep nvarchar(10),   --7. Step To Print (must be string '0' '1' '2' '3' '4' '5' '6')
+	@InputSrc nvarchar(5)      --8. Pull CDW Data From Your Database? (set to string 'yes', or anything else for 'no')
 )
 AS
 BEGIN
@@ -139,7 +141,9 @@ DECLARE @list nvarchar(MAX);
 /*
 FIXME - what is this 'LibSchemaParseFN'? Seems not declared/defined at this point.
 I suspect it's an SProc or similar.
-
+Clearly, it does something to Input1.
+Probably extracts the DB name like ORD_Whoever, and the schema like Src.
+Maybe I could set both @Library and @Schema manually.
 */
 SET @Library = (SELECT Dflt.LibSchemaParseFN (@Input1, 'library'));
 SET @Schema = (SELECT Dflt.LibSchemaParseFN (@Input1, 'schema'));
