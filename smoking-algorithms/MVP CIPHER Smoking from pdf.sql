@@ -197,7 +197,7 @@ BEGIN
 END
 
 
-/* FIXME - need to replace "yourdatabasename" below. */
+/* FIXME - need to replace "yourdatabasename" or the ORD_Whoever name below. */
 
 --Step 6 - Set up @List for Smoking06V Creation
 --JPR - split this into two possible commands based on type of ref_date_col_name (column or datestring)
@@ -206,7 +206,7 @@ BEGIN
 	SET @list =
 	stuff ((select distinct ',' +
 	quotename(column_name)
-	from yourdatabasename.information_schema.columns
+	from ORD_ElSerag_202208011D.information_schema.columns
 	where table_name ='Smoking05' and column_name not in (''+@PatientKey+'','reference_date')
 	for xml path(''), type).value ('.','VARCHAR(MAX)'),1,1,'');
 END
@@ -215,7 +215,7 @@ BEGIN
 	SET @list =
 	stuff ((select distinct ',' +
 	quotename(column_name)
-	from yourdatabasename.information_schema.columns
+	from ORD_ElSerag_202208011D.information_schema.columns
 	where table_name ='Smoking05' and column_name not in (''+@PatientKey+'',''+ @Ref_Date_Col_Name+'')
 	for xml path(''), type).value ('.','VARCHAR(MAX)'),1,1,'');
 END
