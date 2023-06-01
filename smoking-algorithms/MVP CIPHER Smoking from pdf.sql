@@ -139,14 +139,18 @@ DECLARE @list nvarchar(MAX);
 
 --Parse Library and Schema names from INPUT1
 /*
-FIXME - what is this 'LibSchemaParseFN'? Seems not declared/defined at this point.
+FIXME - what was this 'LibSchemaParseFN'? Seems not declared/defined at this point.
 I suspect it's an SProc or similar.
 Clearly, it does something to Input1.
 Probably extracts the DB name like ORD_Whoever, and the schema like Src.
-Maybe I could set both @Library and @Schema manually.
+Now I set both @Library and @Schema manually.
+
+NOW THIS MAY BREAK if the user enters something unexpected for @Input1 parameter!!!!
+
 */
-SET @Library = (SELECT Dflt.LibSchemaParseFN (@Input1, 'library'));
-SET @Schema = (SELECT Dflt.LibSchemaParseFN (@Input1, 'schema'));
+
+SET @Library = 'ORD_ElSerag_202208011D';
+SET @Schema = 'Src';
 DECLARE @Orig_Library nvarchar(50); --Orig @INPUT1 Library
 DECLARE @Orig_Schema nvarchar(50); --Orig @INPUT1 Schema
 SET @Orig_Library = @Library;
