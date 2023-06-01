@@ -11,6 +11,7 @@ How I localized the code to our own study database:
 CREATE VIEW 
 [Dflt].[CDW_DxData_OPC&PTF_Smoking] AS
 /*
+Gather ICD-9 diagnoses (ICD-10 comes later).
 Compiles ICD SIDs and dates from these tables:
 Outpatient visit, outpatient workload, inpatient (admission) dx, inpatient discharge dx
 */
@@ -18,7 +19,7 @@ Outpatient visit, outpatient workload, inpatient (admission) dx, inpatient disch
 		PatientSID,
 		VisitSID as INorOUT_SID,
 		VisitDateTime,
-		ICD9SID as ICD9SID,  -- FIXME: uh oh. does this need to change to ICD10SID?
+		ICD9SID as ICD9SID,
 		'OUT' as 'Care',
 		PrimarySecondary
 	FROM
@@ -82,6 +83,11 @@ GO
 
 CREATE VIEW 
 [Dflt].[CDW_DxData_OPC&PTF_Smoking_ICD10] AS
+/*
+Gather ICD-10 diagnoses.
+Compiles ICD SIDs and dates from these tables:
+Outpatient visit, outpatient workload, inpatient (admission) dx, inpatient discharge dx
+*/
 	SELECT DISTINCT
 		PatientSID,
 		VisitSID as INorOUT_SID,
